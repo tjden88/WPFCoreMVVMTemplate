@@ -9,25 +9,28 @@ namespace WPFCoreMVVMTemplate.Infrastructure.Commands.Base
         private readonly Predicate<object> _CanExecute;
 
 
-        public CommandAsync(Action<object> execute) : this(execute, null) { }
-
-        public CommandAsync(Action<object> execute, Predicate<object> canExecute)
+        public CommandAsync(Action Execute, Func<bool> CanExecute = null) : this(P => Execute(),
+            CanExecute is null ? null : P => CanExecute())
         {
-            _Execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _CanExecute = canExecute;
+        }
+
+        public CommandAsync(Action<object> Execute, Predicate<object> CanExecute = null)
+        {
+            _Execute = Execute ?? throw new ArgumentNullException(nameof(Execute));
+            _CanExecute = CanExecute;
         }
 
         /// <summary>Возможность выполнения команды</summary>
-        protected override bool CanExecute(object p) => _CanExecute?.Invoke(p) ?? true;
+        protected override bool CanExecute(object P) => _CanExecute?.Invoke(P) ?? true;
 
         /// <summary>Выполнить команду</summary>
-        protected override async void Execute(object parameter)
+        protected override async void Execute(object Parameter)
         {
-            if (!CanExecute(parameter)) return;
+            if (!CanExecute(Parameter)) return;
             try
             {
                 Executable = false;
-                await Task.Run(() => _Execute(parameter));
+                await Task.Run(() => _Execute(Parameter));
                 Executable = true;
             }
             catch
@@ -36,6 +39,5 @@ namespace WPFCoreMVVMTemplate.Infrastructure.Commands.Base
                 throw;
             }
         }
-
     }
 }
