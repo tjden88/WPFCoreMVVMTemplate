@@ -1,10 +1,10 @@
-﻿using System;
-using System.Windows;
-using WPFCoreMVVMTemplate.Infrastructure.Commands.Base;
+﻿using System.Windows;
+using WPR.MVVM.Commands;
 
 namespace WPFCoreMVVMTemplate.Infrastructure.Commands
 {
-    class CloseWindow : BaseCommand
+    /// <summary>Закрыть окно параметра, либо активное окно</summary>
+    internal class CloseWindow : BaseCommand
     {
 
         private static Window GetWindow(object p) => p as Window ?? App.ActiveWindow;

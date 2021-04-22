@@ -1,17 +1,17 @@
 ﻿using WPFCoreMVVMTemplate.Services.Interfaces;
-using WPFCoreMVVMTemplate.ViewModels.Base;
+using WPR.MVVM.ViewModels;
+using System;
 
 namespace WPFCoreMVVMTemplate.ViewModels
 {
     internal class MainWindowViewModel : WindowViewModel
     {
         private readonly IUserDialog _UserDialog;
-        private readonly IDataService _DataService;
 
-        public MainWindowViewModel(IUserDialog UserDialog, IDataService DataService)
+        public MainWindowViewModel(IUserDialog UserDialog)
         {
+            Title = "Главное окно";
             _UserDialog = UserDialog;
-            _DataService = DataService;
         }
     }
 }
